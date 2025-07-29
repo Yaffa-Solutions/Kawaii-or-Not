@@ -1,0 +1,34 @@
+body {
+  font-family: "Nunito", sans-serif;
+}
+
+
+.type-switcher {
+  position: relative;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+.type-option {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.type-option.active {
+  color: white;
+}
+.switcher-bg {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  background: linear-gradient(135deg, #0ac6f2, #0891b2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(10, 198, 242, 0.3);
+}
+.switcher-bg.rickandmorty {
+  transform: translateX(calc(100% + 4px));
+}
+
