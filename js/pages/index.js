@@ -5,7 +5,7 @@ import {renderGameUI} from "../components/render.js"
 document.addEventListener('DOMContentLoaded',()=>{
      createHeaderSection()
     
- const dummyCharacter = { name: "Naruto Uzumaki", img: "https://via.placeholder.com/150" };
+ const dummyCharacter = { name:"", img: "" };
   const dummyScore = 5;
   const isCorrect = true;
 
