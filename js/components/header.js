@@ -1,3 +1,4 @@
+import { fetchAnime } from "../utilities/api.js";
 export function createElement(tag, classes = []) {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
@@ -83,6 +84,7 @@ export const createHeaderSection = () => {
     rickAndMortyBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.remove("rickandmorty");
     currentChoice = "Anime";
+    fetchAnime();
   });
 
   rickAndMortyBtn.addEventListener("click", () => {
@@ -97,6 +99,7 @@ export const createHeaderSection = () => {
   createDescription(mainDiv);
   createSearch(mainDiv);
   elementsAppender(container, [mainDiv]);
+  fetchAnime();
 };
 
 const createDescription = (parent) => {
@@ -113,10 +116,38 @@ const createDescription = (parent) => {
     "text-lg",
     "text-gray-700",
     "shadow",
+    "relative",
   ]);
-  const descP = createElement("p", ["italic"]);
+  const descP = createElement("p", [
+    "italic",
+    "descAnime",
+    "line-clamp-3",
+    "transition-all",
+    "duration-300",
+    "text-ellipsis",
+    "overflow-hidden",
+  ]);
+  const readMoreBtn = createElement("button", [
+    "mt-2",
+    "text-blue-500",
+    "hover:underline",
+    "font-medium",
+    "text-sm",
+    "readMoreBtn"
+  ]);
+  readMoreBtn.textContent = "Read more";
+  readMoreBtn.style.display = "none"; 
+  
+  readMoreBtn.addEventListener("click", () => {
+    descP.classList.toggle("line-clamp-3");
+    if (readMoreBtn.textContent === "Read more") {
+      readMoreBtn.textContent = "Show less";
+    } else {
+      readMoreBtn.textContent = "Read more";
+    }
+  });
   elementsAppender(descDiv, [pDiv]);
-  elementsAppender(pDiv, [descP]);
+  elementsAppender(pDiv, [descP,readMoreBtn]);
   elementsAppender(parent, [descDiv]);
 };
 
