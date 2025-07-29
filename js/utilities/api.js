@@ -1,4 +1,6 @@
-function getRandom(array, number) {
+import { fetch } from "./fetch.js";
+
+const getRandom=(array, number)=> {
   const result = [];
   while (result.length < number && result.length < array.length) {
     const randomIndex = Math.floor(Math.random() * array.length);
@@ -9,23 +11,24 @@ function getRandom(array, number) {
   }
   return result;
 }
+let animeData = null;
 
-export function fetchAnime() {
-  let xhr = new XMLHttpRequest();
-  let url = "https://api.jikan.moe/v4/characters";
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-        const randomChar = getRandom(data.data, 10);
-        const character = randomChar[0];
+export const fetchAnime=()=> {
+    const url ='https://api.jikan.moe/v4/characters'
+    fetch(url, "GET", (err, data) => {
+        if (err) {
+      console.error("Error fetching anime data:", err);
+      return;
+        }
+  
+        animeData= getRandom(data.data, 10);
+        const character = animeData[0];
         const readMoreBtn = document.querySelector(".readMoreBtn");
-        const desc = document.querySelector(".desc");
+        const desc = document.querySelector(".descAnime");
 
         if (desc && character) {
           let cleanDescription =
-            randomChar[0].about || "No description available.";
+            animeData[0].about || "No description available.";
           cleanDescription = cleanDescription.split(character.name).join("");
           desc.textContent = cleanDescription;
 
@@ -35,13 +38,11 @@ export function fetchAnime() {
             readMoreBtn.style.display = "none";
           }
         }
-        console.log(randomChar);
-      } else {
-        console.error("Error fetching anime data");
-      }
+        console.log(animeData);
+      })
     }
-  };
 
-  xhr.open("GET", url);
-  xhr.send();
-}
+
+
+
+

@@ -120,7 +120,7 @@ const createDescription = (parent) => {
   ]);
   const descP = createElement("p", [
     "italic",
-    "desc",
+    "descAnime",
     "line-clamp-3",
     "transition-all",
     "duration-300",
