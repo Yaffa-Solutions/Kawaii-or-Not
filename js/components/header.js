@@ -1,10 +1,10 @@
-function createElement(tag, classes = []) {
+export function createElement(tag, classes = []) {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
   return el;
 }
 
-const elementsAppender = (parent, children) => {
+export const elementsAppender = (parent, children) => {
   children.forEach((child) => parent.appendChild(child));
 };
 
