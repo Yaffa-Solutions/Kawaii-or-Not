@@ -1,6 +1,6 @@
 import { createElement ,elementsAppender} from "./header.js";
 
-export function createResultSection(score, isCorrect) {
+export const createResultSection=(score, isCorrect) =>{
   const resultDiv = createElement("div", [
     "bg-white",
     "rounded-xl",

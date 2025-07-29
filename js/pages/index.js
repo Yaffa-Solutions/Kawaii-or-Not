@@ -1,16 +1,24 @@
-import { createHeaderSection } from "../components/header.js"
+import { createHeaderSection } from "../components/header.js";
+
 import {renderGameUI} from "../components/render.js"
 
 document.addEventListener('DOMContentLoaded',()=>{
-    createHeaderSection()
-    const dummyCharacter = { name: "Naruto Uzumaki", img: "https://via.placeholder.com/150" };
+     createHeaderSection()
+    
+ const dummyCharacter = { name:"", img: "" };
   const dummyScore = 5;
   const isCorrect = true;
+
+  const conHandler=()=> {
+    console.log("con clicked");
+    
+  }
   
-  function restartHandler() {
+  const restartHandler=()=> {
     console.log("Restart clicked");
     
   }
 
-  renderGameUI(dummyCharacter, dummyScore, isCorrect, restartHandler);
+  renderGameUI(dummyCharacter, dummyScore, isCorrect,conHandler, restartHandler);
+
 })
