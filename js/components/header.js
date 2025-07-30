@@ -1,5 +1,5 @@
 import { fetchAnime, goHundler } from "../utilities/api.js";
-import { fetchRick } from "../utilities/Rick.js";
+import { fetchRick ,goHandlerRick} from "../utilities/Rick.js";
 export function createElement(tag, classes = []) {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
@@ -85,7 +85,8 @@ export const createHeaderSection = () => {
     rickAndMortyBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.remove("rickandmorty");
     currentChoice = "Anime";
-    // stopRick();
+    // animeBtn.disabled = true;
+   rickAndMortyBtn.disabled = true;
     fetchAnime();
   });
 
@@ -96,7 +97,9 @@ export const createHeaderSection = () => {
     animeBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.add("rickandmorty");
     currentChoice = "RickAndMorty";
-    // stopAnime();
+    animeBtn.disabled = true;
+    rickAndMortyBtn.disabled = true;
+    document.querySelector(".descAnime").textContent = "Loading description...";
     fetchRick();
   });
 
@@ -205,8 +208,9 @@ const createSearch = (parent) => {
     "font-semibold",
     "go"
   ]);
+  const tt=()=>currentChoice==="Anime"?goHundler():goHandlerRick();
   goButton.textContent = "Go";
-  goButton.addEventListener("click", goHundler);
+  goButton.addEventListener("click",tt );
   goButton.disabled = true;
   searchInput.addEventListener("input", () => {
     const isEmpty = searchInput.value.trim() === "";

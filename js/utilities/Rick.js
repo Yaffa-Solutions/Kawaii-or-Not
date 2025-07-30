@@ -4,7 +4,7 @@ const getRandomChars = (arr, count) => {
   const shuffled = [...arr].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
-
+let score = 0;
 let rickData = null;
 let rickIndex = 0;
 let continueBtn = null;
@@ -28,14 +28,7 @@ export const fetchRick = () => {
           image: char.image,
           desc: descriptions[index],
         }));
-    //       const descriptions = await getDescriptionsSequentially(characters);
-
-    //   rickData = characters.map((char, index) => ({
-    //     name: char.name,
-    //     image: char.image,
-    //     desc: descriptions[index] || "No description available",
-    //   }));
-
+  
         rickIndex = 0;
         updateCard(rickData[rickIndex],false);
         updateDescription(rickData[rickIndex]);
@@ -67,7 +60,7 @@ const getDescriptionXHR = (name) => {
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
     const fKey='AIzaSyC9h53oKcxtBO8uv9nhIq8kdFpkhb0Wzmc'
-    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyC9h53oKcxtBO8uv9nhIq8kdFpkhb0Wzmc`);
+    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyCaoggPfwE_VlqJpp_iDkkSdXLQGPpunQU`);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = () => {
@@ -123,9 +116,18 @@ const updateDescription = (character) => {
 
 const updateResultMessage = (text) => {
   const msg = document.querySelector(".msg");
-  if (msg) msg.textContent = text;
-};
+  if (!msg) return;
+  msg.textContent = text;
+  msg.classList.remove("text-green-500", "text-red-500");
 
+  if (text.includes("right")) {
+    msg.classList.add("text-green-500");
+  } else if (text.includes("wrong")) {
+    msg.classList.add("text-red-500");
+  } else {
+    msg.classList.remove("text-green-500", "text-red-500");
+  }
+};
 const clickContinue = () => {
   if (!rickData) return;
   rickIndex++;
@@ -144,18 +146,28 @@ const clickContinue = () => {
 
   updateResultMessage("Your guess?");
 };
+const updateScoreDisplay = (score) => {
+  const scoreEl = document.querySelector(".score");
+  if (scoreEl) {
+    scoreEl.textContent = `Score: ${score}/10`;
+  }
+};
 
 export const goHandlerRick = () => {
   const input = document.querySelector(".input");
   const guess = input.value.trim().toLowerCase();
   const currentChar = rickData[rickIndex];
-  const correctName = currentChar.name.toLowerCase();
+   const correctName = currentChar.name.split(" ")[0].toLowerCase();
+
 
   if (guess === correctName) {
-    updateResultMessage("Correct!");
+    score++;
+    updateResultMessage("You got it right! 🎉");
   } else {
-    updateResultMessage("Wrong!");
+    updateResultMessage("You got it wrong :(");
   }
+  updateScoreDisplay(score);
+  input.value = "";
 
   updateCard(currentChar, true);
   input.disabled = true;
