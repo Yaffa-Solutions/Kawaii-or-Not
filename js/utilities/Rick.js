@@ -66,7 +66,8 @@ const key2='AIzaSyAq9wAGrqvxtgB4fhQqB5UqDWNqi1dei3M'
 const getDescriptionXHR = (name) => {
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyAu2GmTwim31K9NOaudBKPDnCrkzmtgoIA`);
+    const fKey='AIzaSyC9h53oKcxtBO8uv9nhIq8kdFpkhb0Wzmc'
+    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyC9h53oKcxtBO8uv9nhIq8kdFpkhb0Wzmc`);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = () => {
