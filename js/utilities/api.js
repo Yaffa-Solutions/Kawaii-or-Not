@@ -31,7 +31,7 @@ export const fetchAnime = () => {
     updateCard(animeData[currentIndex]);
     updateDescription(animeData[currentIndex]);
 
-     continueBtn = document.querySelector(".continue");
+    continueBtn = document.querySelector(".continue");
     continueBtn.disabled = true;
     if (continueBtn) {
       continueBtn.addEventListener("click", clickContinue);
@@ -72,22 +72,41 @@ const updateDescription = (character) => {
 
 const clickContinue = () => {
   if (!animeData) return;
-    continueBtn.disabled = true;
+  continueBtn.disabled = true;
   continueBtn.classList.add("opacity-50", "cursor-not-allowed");
-  
 
   currentIndex++;
-  if (currentIndex >= animeData.length) currentIndex = 0;
+  if (currentIndex >= animeData.length) {
+    let finalMessage = `Your final score is: ${score}/10`;
+    if (score > 5) {
+      finalMessage += " 🎉 You did great!";
+    } else {
+      finalMessage += " 😅 This game might not be your thing!";
+    }
+    updateResultMessage(finalMessage);
+    const goBtn = document.querySelector(".go");
+    const input = document.querySelector(".input");
+
+    if (goBtn) {
+      goBtn.disabled = true;
+      goBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+    if (input) input.disabled = true;
+    return;
+  }
   updateCard(animeData[currentIndex]);
   updateDescription(animeData[currentIndex]);
   const input = document.querySelector(".input");
-if (input) {
-  input.disabled = false;
-  input.value = "";
-}
+  if (input) {
+    input.disabled = false;
+    input.value = "";
+  }
+  const goBtn = document.querySelector(".go");
+  if (goBtn) {
+    goBtn.disabled = false;
+    goBtn.classList.remove("opacity-50", "cursor-not-allowed");
+  }
   updateResultMessage("Your guess?");
-
-
 };
 const checkName = () => {
   const input = document.querySelector(".input");
@@ -108,7 +127,8 @@ export const goHundler = () => {
   const img = document.querySelector(".card-image");
   const name = document.querySelector(".card-name");
   const input = document.querySelector(".input");
-
+  const goBtn = document.querySelector(".go");
+  if (goBtn.disabled) return;
 
   const currentChar = animeData[currentIndex];
 
@@ -117,36 +137,51 @@ export const goHundler = () => {
     img.style.display = "block";
     name.style.display = "block";
   }
-
   checkName();
   input.disabled = true;
-
-
-  if (continueBtn) {
-  continueBtn.disabled = false;
-    continueBtn.classList.remove("opacity-50", "cursor-not-allowed");
-
+  goBtn.disabled = true;
+  goBtn.classList.add("opacity-50", "cursor-not-allowed");
+  if (currentIndex === animeData.length - 1) {
+    if (continueBtn) {
+      continueBtn.disabled = true;
+      continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+  } else {
+    if (continueBtn) {
+      continueBtn.disabled = false;
+      continueBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    }
+  }
 };
-}
 const updateResultMessage = (text) => {
   const msg = document.querySelector(".msg");
   msg.textContent = text;
 };
 const updateScoreDisplay = (newScore) => {
-  const score= document.querySelector(".score")
+  const score = document.querySelector(".score");
   if (!score) return;
-  score.textContent = `Your score is: ${newScore}/10`;
+  const isFinal = currentIndex === animeData.length - 1;
+  if (isFinal) {
+    const finalMessage =
+      newScore > 5
+        ? `Your final score is: ${newScore}/10 🎉 You did great!`
+        : `Your final score is: ${newScore}/10 😅 This game might not be your thing!`;
+
+    score.textContent = finalMessage;
+  } else {
+    score.textContent = `Your score is: ${newScore}/10`;
+  }
 };
-export const restartBtn=()=>{
-  score=0
-  currentIndex=0
-  updateResultMessage('Your Guess?')
-  updateScoreDisplay(score)
-  fetchAnime()
+export const restartBtn = () => {
+  score = 0;
+  currentIndex = 0;
+  updateResultMessage("Your Guess?");
+  updateScoreDisplay(score);
+  fetchAnime();
   const input = document.querySelector(".input");
   if (input) input.value = "";
   if (continueBtn) {
     continueBtn.disabled = true;
     continueBtn.classList.add("opacity-50", "cursor-not-allowed");
   }
-}
+};

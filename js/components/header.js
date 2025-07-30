@@ -198,6 +198,7 @@ const createSearch = (parent) => {
     "duration-300",
     "text-lg",
     "font-semibold",
+    "go"
   ]);
   goButton.textContent = "Go";
   goButton.addEventListener("click", goHundler);
