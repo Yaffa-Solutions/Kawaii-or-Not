@@ -9,17 +9,20 @@ document.addEventListener('DOMContentLoaded',()=>{
  const dummyCharacter = { name:"", img: "" };
   const dummyScore = 5;
   const isCorrect = true;
+//  const dummyCharacter = { name: "Naruto Uzumaki", img: "https://via.placeholder.com/150" };
+//   const dummyScore = 5;
+//   const isCorrect = true;
 
-  const conHandler=()=> {
-    console.log("con clicked");
+//   const conHandler=()=> {
+//     console.log("con clicked");
     
-  }
+//   }
   
-  const restartHandler=()=> {
-    console.log("Restart clicked");
+//   const restartHandler=()=> {
+//     console.log("Restart clicked");
     
-  }
+//   }
 
-  renderGameUI(dummyCharacter, dummyScore, isCorrect,conHandler, restartHandler);
+//   renderGameUI(dummyCharacter, dummyScore, isCorrect,conHandler, restartHandler);
 
 })

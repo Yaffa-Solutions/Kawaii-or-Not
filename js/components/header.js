@@ -1,5 +1,5 @@
 import { fetchAnime } from "../utilities/api.js";
-export function createElement(tag, classes = []) {
+export const createElement=(tag, classes = [])=> {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
   return el;
@@ -99,6 +99,8 @@ export const createHeaderSection = () => {
   createDescription(mainDiv);
   createSearch(mainDiv);
   elementsAppender(container, [mainDiv]);
+  const gameWrapper = createElement("div", ["game-wrapper"]);
+  container.appendChild(gameWrapper);
   fetchAnime();
 };
 
@@ -176,6 +178,7 @@ const createSearch = (parent) => {
     "focus:ring-primary/20",
     "transition-all",
     "duration-300",
+    "guess-input"
   ]);
   searchInput.type = "text";
   searchInput.placeholder = "Enter character name...";

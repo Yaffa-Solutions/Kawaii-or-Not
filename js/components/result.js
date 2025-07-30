@@ -16,10 +16,10 @@ export const createResultSection=(score, isCorrect) =>{
     "text-xl",
     "mb-2",
   ]);
-  msg.textContent = isCorrect ? "You got it right!" : "Try again!";
+  msg.textContent = isCorrect ? "You got it right!" : "Wrong answer!";
 
   const scoreP = createElement("p", ["font-semibold"]);
-  scoreP.textContent = `Your score is: ${score}`;
+  scoreP.textContent = `Your score is: ${score}/10`;
 
   elementsAppender(resultDiv, [msg, scoreP]);
 
