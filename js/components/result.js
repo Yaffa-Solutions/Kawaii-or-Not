@@ -12,14 +12,16 @@ export const createResultSection=(score, isCorrect) =>{
 
   const msg = createElement("p", [
     "font-bold",
-    isCorrect ? "text-green-600" : "text-red-600",
+    "text-gray-600",
     "text-xl",
     "mb-2",
+    "msg"
   ]);
-  msg.textContent = isCorrect ? "You got it right!" : "Try again!";
+  msg.textContent = 'Your Guess ?';
 
-  const scoreP = createElement("p", ["font-semibold"]);
-  scoreP.textContent = `Your score is: ${score}`;
+  const scoreP = createElement("p", ["font-semibold","score"]);
+   score=0
+  scoreP.textContent = `Your score is: ${score}/10`;
 
   elementsAppender(resultDiv, [msg, scoreP]);
 
