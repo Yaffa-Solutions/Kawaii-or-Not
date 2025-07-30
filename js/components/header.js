@@ -1,4 +1,4 @@
-import { fetchAnime } from "../utilities/api.js";
+import { fetchAnime, goHundler } from "../utilities/api.js";
 export function createElement(tag, classes = []) {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
@@ -133,11 +133,11 @@ const createDescription = (parent) => {
     "hover:underline",
     "font-medium",
     "text-sm",
-    "readMoreBtn"
+    "readMoreBtn",
   ]);
   readMoreBtn.textContent = "Read more";
-  readMoreBtn.style.display = "none"; 
-  
+  readMoreBtn.style.display = "none";
+
   readMoreBtn.addEventListener("click", () => {
     descP.classList.toggle("line-clamp-3");
     if (readMoreBtn.textContent === "Read more") {
@@ -147,7 +147,7 @@ const createDescription = (parent) => {
     }
   });
   elementsAppender(descDiv, [pDiv]);
-  elementsAppender(pDiv, [descP,readMoreBtn]);
+  elementsAppender(pDiv, [descP, readMoreBtn]);
   elementsAppender(parent, [descDiv]);
 };
 
@@ -158,8 +158,14 @@ const createSearch = (parent) => {
     "mb-4",
     "mt-4",
   ]);
-  const searchDiv = createElement("div", ["w-full", "max-w-2xl"]);
+  const searchDiv = createElement("div", [
+    "w-full",
+    "max-w-2xl",
+    "flex",
+    "gap-2",
+  ]);
   const searchInput = createElement("input", [
+    "flex-grow",
     "w-full",
     "h-16",
     "pl-16",
@@ -176,10 +182,39 @@ const createSearch = (parent) => {
     "focus:ring-primary/20",
     "transition-all",
     "duration-300",
+    "input"
   ]);
   searchInput.type = "text";
   searchInput.placeholder = "Enter character name...";
-  elementsAppender(searchDiv, [searchInput]);
+  const goButton = createElement("button", [
+    "h-16",
+    "px-6",
+    "bg-gray-400",
+    "text-white",
+    "rounded-2xl",
+    "shadow-lg",
+    "hover:bg-primary-dark",
+    "transition-all",
+    "duration-300",
+    "text-lg",
+    "font-semibold",
+  ]);
+  goButton.textContent = "Go";
+  goButton.addEventListener("click", goHundler);
+  goButton.disabled = true;
+  searchInput.addEventListener("input", () => {
+    const isEmpty = searchInput.value.trim() === "";
+    goButton.disabled = isEmpty;
+    if (isEmpty) {
+      goButton.classList.remove("bg-primary");
+      goButton.classList.add("bg-gray-400");
+    } else {
+      goButton.classList.remove("bg-gray-400");
+      goButton.classList.add("bg-primary");
+    }
+  });
+
+  elementsAppender(searchDiv, [searchInput, goButton]);
   elementsAppender(searchContainer, [searchDiv]);
   elementsAppender(parent, [searchContainer]);
 };
