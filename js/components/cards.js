@@ -1,5 +1,6 @@
 import { createElement ,elementsAppender} from "./header.js";
 export const createCharacterCard =(character)=> {
+
   const card = createElement("div", [
     "bg-white",
     "rounded-xl",
@@ -17,14 +18,12 @@ export const createCharacterCard =(character)=> {
       "w-48",
       "h-60",
       "object-cover",
+      "card-image"
     ]);
-  img.src = character.img;
-  img.alt = character.name;
+ 
 
-  const name = createElement("p", ["font-semibold", "text-lg"]);
-  name.textContent = character.name;
+  const name = createElement("p", ["font-semibold", "text-lg","card-name"]);
   
   elementsAppender(card, [img, name]);
-
   return card;
 }
