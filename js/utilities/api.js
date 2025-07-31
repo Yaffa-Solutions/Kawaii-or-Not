@@ -1,10 +1,5 @@
 import { fetch } from "./fetch.js";
-let isCurrentRick = false;
-let isCurrentAnime = false;
 
-export const stopAnime = () => {
-  isCurrentAnime = false;
-};
 const getRandom = (array, number) => {
   const result = [];
   while (result.length < number && result.length < array.length) {
@@ -23,11 +18,8 @@ let score = 0;
 let continueBtn = null;
 
 export const fetchAnime = () => {
-  // isCurrentAnime = true;
-  // isCurrentRick = false;
   const url = "https://api.jikan.moe/v4/characters";
   fetch(url, "GET", (err, data) => {
-    // if (!isCurrentAnime) return;
     if (err) {
       console.error("Error fetching anime data:", err);
       return;
