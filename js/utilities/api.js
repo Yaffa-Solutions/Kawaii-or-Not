@@ -1,5 +1,10 @@
 import { fetch } from "./fetch.js";
+let isCurrentRick = false;
+let isCurrentAnime = false;
 
+export const stopAnime = () => {
+  isCurrentAnime = false;
+};
 const getRandom = (array, number) => {
   const result = [];
   while (result.length < number && result.length < array.length) {
@@ -18,6 +23,7 @@ let score = 0;
 let continueBtn = null;
 
 export const fetchAnime = () => {
+ 
   const url = "https://api.jikan.moe/v4/characters";
   fetch(url, "GET", (err, data) => {
     if (err) {
@@ -112,7 +118,8 @@ const checkName = () => {
   const input = document.querySelector(".input");
   const guess = input.value.trim().toLowerCase();
   const currentChar = animeData[currentIndex];
-  const correctName = currentChar.name.toLowerCase();
+  const correctName = currentChar.name.split(" ")[0].toLowerCase();
+
 
   if (guess === correctName) {
     score++;
@@ -155,7 +162,17 @@ export const goHundler = () => {
 };
 const updateResultMessage = (text) => {
   const msg = document.querySelector(".msg");
+  if (!msg) return;
   msg.textContent = text;
+  msg.classList.remove("text-green-500", "text-red-500");
+
+  if (text.includes("right")) {
+    msg.classList.add("text-green-500");
+  } else if (text.includes("wrong")) {
+    msg.classList.add("text-red-500");
+  } else {
+    msg.classList.remove("text-green-500", "text-red-500");
+  }
 };
 const updateScoreDisplay = (newScore) => {
   const score = document.querySelector(".score");
