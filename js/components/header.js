@@ -86,7 +86,7 @@ export const createHeaderSection = () => {
     switcherBgDiv.classList.remove("rickandmorty");
     currentChoice = "Anime";
     // animeBtn.disabled = true;
-   rickAndMortyBtn.disabled = true;
+  //  rickAndMortyBtn.disabled = true;
     fetchAnime();
   });
 
@@ -97,8 +97,8 @@ export const createHeaderSection = () => {
     animeBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.add("rickandmorty");
     currentChoice = "RickAndMorty";
-    animeBtn.disabled = true;
-    rickAndMortyBtn.disabled = true;
+    // animeBtn.disabled = true;
+    // rickAndMortyBtn.disabled = true;
     document.querySelector(".descAnime").textContent = "Loading description...";
     fetchRick();
   });

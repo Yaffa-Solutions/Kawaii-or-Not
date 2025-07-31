@@ -60,7 +60,7 @@ const getDescriptionXHR = (name) => {
   return new Promise((resolve) => {
     const xhr = new XMLHttpRequest();
     const fKey='AIzaSyC9h53oKcxtBO8uv9nhIq8kdFpkhb0Wzmc'
-    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyCaoggPfwE_VlqJpp_iDkkSdXLQGPpunQU`);
+    xhr.open("POST", `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=AIzaSyC5sQfvKenfDrDMvOr7eoD6Rwp9-Q8hnLY`);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = () => {
