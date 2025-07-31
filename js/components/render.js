@@ -1,35 +1,40 @@
-
-import { createCharacterCard } from "../components/cards.js";
-import { createResultSection } from "../components/result.js"; 
-import { createConButton } from "../components/continueBtn.js";
-import { createRestartButton } from "../components/buttons.js";
-import { createElement ,elementsAppender} from "./header.js";
-export const renderGameUI =(character, score, isCorrect,conHandler, restartHandler) =>{
-  const container = document.querySelector(".container");
+import { createCharacterCard } from '../components/cards.js';
+import { createResultSection } from '../components/result.js';
+import { createConButton } from '../components/continueBtn.js';
+import { createRestartButton } from '../components/buttons.js';
+import { createHtmlElement, customAppendChild } from '../utilities/dom.js';
+export const renderGameUI = (
+  character,
+  score,
+  isCorrect,
+  conHandler,
+  restartHandler
+) => {
+  const container = document.querySelector('.container');
 
   const card = createCharacterCard(character);
   const result = createResultSection(score, isCorrect);
   const conBtn = createConButton(conHandler);
   const restartBtn = createRestartButton(restartHandler);
 
-  const controlsDiv = createElement("div", [
-    "flex", 
-    "items-center", 
-    "justify-center",
-    "gap-4",
-    "mt-4",]);
-   elementsAppender(controlsDiv, [conBtn, restartBtn])
-   const wrapper = createElement("div", [
-    "flex",
-    "flex-col",
-    "md:flex-row",
-    "items-center",
-    "justify-center",
-    "gap-8",
-    "mt-8",
+  const controlsDiv = createHtmlElement('div', [
+    'flex',
+    'items-center',
+    'justify-center',
+    'gap-4',
+    'mt-4',
   ]);
-  elementsAppender(wrapper, [card, result]);
+  customAppendChild(controlsDiv, conBtn, restartBtn);
+  const wrapper = createHtmlElement('div', [
+    'flex',
+    'flex-col',
+    'md:flex-row',
+    'items-center',
+    'justify-center',
+    'gap-8',
+    'mt-8',
+  ]);
+  customAppendChild(wrapper, card, result);
 
-
-  elementsAppender(container, [wrapper, controlsDiv]);
-}
+  customAppendChild(container, wrapper, controlsDiv);
+};
