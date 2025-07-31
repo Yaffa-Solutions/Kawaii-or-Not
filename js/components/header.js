@@ -1,5 +1,4 @@
 import { fetchAnime, goHundler } from "../utilities/api.js";
-import { fetchRick } from "../utilities/Rick.js";
 export function createElement(tag, classes = []) {
   const el = document.createElement(tag);
   classes.forEach((cl) => el.classList.add(cl));
@@ -85,7 +84,6 @@ export const createHeaderSection = () => {
     rickAndMortyBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.remove("rickandmorty");
     currentChoice = "Anime";
-    // stopRick();
     fetchAnime();
   });
 
@@ -96,14 +94,11 @@ export const createHeaderSection = () => {
     animeBtn.classList.add("text-gray-600");
     switcherBgDiv.classList.add("rickandmorty");
     currentChoice = "RickAndMorty";
-    // stopAnime();
-    fetchRick();
   });
 
   createDescription(mainDiv);
   createSearch(mainDiv);
   elementsAppender(container, [mainDiv]);
-  // stopRick();
   fetchAnime();
 };
 
