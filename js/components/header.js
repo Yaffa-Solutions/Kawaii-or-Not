@@ -1,221 +1,92 @@
-import { fetchAnime, goHundler } from "../utilities/api.js";
-export function createElement(tag, classes = []) {
-  const el = document.createElement(tag);
-  classes.forEach((cl) => el.classList.add(cl));
-  return el;
-}
+import { fetchAnime } from '../utilities/api.js';
+import {
+  createDescription,
+  createSearch,
+} from '../components/animeBtn/index.js';
 
-export const elementsAppender = (parent, children) => {
-  children.forEach((child) => parent.appendChild(child));
-};
+import {
+  createHtmlElement,
+  customAppendChild,
+  queryHtmlElement,
+  createSwitcherButton,
+  handleSwitcherClick,
+} from '../utilities/dom.js';
 
-export let currentChoice = "Anime";
-
-const getContainer = () => {
-  return document.querySelector(".container");
-};
+export let currentChoice = 'Anime';
 
 export const createHeaderSection = () => {
-  const container = getContainer();
-  const mainDiv = createElement("div", [
-    "mx-auto",
-    "px-4",
-    "py-8",
-    "max-w-6xl",
-  ]);
-  const header = createElement("header", ["text-center", "mb-12"]);
-  const bigTitle = createElement("h1", [
-    "text-5xl",
-    "font-bold",
-    "text-gray-800",
-    "mb-4",
-  ]);
-  bigTitle.textContent = "Character Guess Game";
-  const p = createElement("p", ["text-xl", "text-gray-600"]);
-  p.textContent = "Think You Know Anime And Rick & Morty ?";
-  elementsAppender(header, [bigTitle, p]);
-  elementsAppender(mainDiv, [header]);
+  const container = queryHtmlElement('.container');
 
-  const switcherDiv = createElement("div", [
-    "flex",
-    "justify-center",
-    "mb-4",
-    "-mt-8",
+  const mainDiv = createHtmlElement('div', [
+    'mx-auto',
+    'px-4',
+    'py-8',
+    'max-w-6xl',
   ]);
-  const typeSwitcherDiv = createElement("div", [
-    "type-switcher",
-    "w-80",
-    "h-16",
-    "flex",
-  ]);
-  const switcherBgDiv = createElement("div", ["switcher-bg"]);
-  const animeBtn = createElement("button", [
-    "type-option",
-    "flex-1",
-    "flex",
-    "items-center",
-    "justify-center",
-    "gap-3",
-    "font-bold",
-    "text-lg",
-    "active",
-  ]);
-  animeBtn.textContent = "Anime";
-  const rickAndMortyBtn = createElement("button", [
-    "type-option",
-    "flex-1",
-    "flex",
-    "items-center",
-    "justify-center",
-    "gap-3",
-    "font-bold",
-    "text-lg",
-    "text-gray-600",
-  ]);
-  rickAndMortyBtn.textContent = " Rick & Morty";
-  elementsAppender(typeSwitcherDiv, [switcherBgDiv, animeBtn, rickAndMortyBtn]);
-  elementsAppender(switcherDiv, [typeSwitcherDiv]);
-  elementsAppender(mainDiv, [switcherDiv]);
 
-  animeBtn.addEventListener("click", () => {
-    animeBtn.classList.add("active");
-    animeBtn.classList.remove("text-gray-600");
-    rickAndMortyBtn.classList.remove("active");
-    rickAndMortyBtn.classList.add("text-gray-600");
-    switcherBgDiv.classList.remove("rickandmorty");
-    currentChoice = "Anime";
-    fetchAnime();
+  const header = createHtmlElement('header', ['text-center', 'mb-12']);
+
+  const bigTitle = createHtmlElement(
+    'h1',
+    ['text-5xl', 'font-bold', 'text-gray-800', 'mb-4'],
+    'Character Guess Game'
+  );
+
+  const p = createHtmlElement(
+    'p',
+    ['text-xl', 'text-gray-600'],
+    'Think You Know Anime And Rick & Morty ?'
+  );
+
+  customAppendChild(header, bigTitle, p);
+  customAppendChild(mainDiv, header);
+
+  const switcherDiv = createHtmlElement('div', [
+    'flex',
+    'justify-center',
+    'mb-4',
+    '-mt-8',
+  ]);
+
+  const typeSwitcherDiv = createHtmlElement('div', [
+    'type-switcher',
+    'w-80',
+    'h-16',
+    'flex',
+  ]);
+
+  const switcherBgDiv = createHtmlElement('div', ['switcher-bg']);
+
+  const animeBtn = createSwitcherButton('Anime', true, () => {
+    handleSwitcherClick({
+      activeBtn: animeBtn,
+      inactiveBtn: rickAndMortyBtn,
+      isAnime: true,
+      switcherBgDiv,
+      fetchData: fetchAnime,
+    });
+    currentChoice = 'Anime';
   });
 
-  rickAndMortyBtn.addEventListener("click", () => {
-    rickAndMortyBtn.classList.add("active");
-    rickAndMortyBtn.classList.remove("text-gray-600");
-    animeBtn.classList.remove("active");
-    animeBtn.classList.add("text-gray-600");
-    switcherBgDiv.classList.add("rickandmorty");
-    currentChoice = "RickAndMorty";
+  const rickAndMortyBtn = createSwitcherButton('Rick & Morty', false, () => {
+    handleSwitcherClick({
+      activeBtn: rickAndMortyBtn,
+      inactiveBtn: animeBtn,
+      isAnime: false,
+      switcherBgDiv,
+      fetchData: () => {
+        console.log('Hello');
+      },
+    });
+    currentChoice = 'RickAndMorty';
   });
+
+  customAppendChild(typeSwitcherDiv, switcherBgDiv, animeBtn, rickAndMortyBtn);
+  customAppendChild(switcherDiv, typeSwitcherDiv);
+  customAppendChild(mainDiv, switcherDiv);
 
   createDescription(mainDiv);
   createSearch(mainDiv);
-  elementsAppender(container, [mainDiv]);
+  customAppendChild(container, mainDiv);
   fetchAnime();
-};
-
-const createDescription = (parent) => {
-  const descDiv = createElement("div", [
-    "max-w-2xl",
-    "mx-auto",
-    "text-center",
-    "mt-2",
-  ]);
-  const pDiv = createElement("div", [
-    "bg-gray-100",
-    "rounded-xl",
-    "p-6",
-    "text-lg",
-    "text-gray-700",
-    "shadow",
-    "relative",
-  ]);
-  const descP = createElement("p", [
-    "italic",
-    "descAnime",
-    "line-clamp-3",
-    "transition-all",
-    "duration-300",
-    "text-ellipsis",
-    "overflow-hidden",
-  ]);
-  const readMoreBtn = createElement("button", [
-    "mt-2",
-    "text-blue-500",
-    "hover:underline",
-    "font-medium",
-    "text-sm",
-    "readMoreBtn",
-  ]);
-  readMoreBtn.textContent = "Read more";
-  readMoreBtn.style.display = "none";
-
-  readMoreBtn.addEventListener("click", () => {
-    descP.classList.toggle("line-clamp-3");
-    if (readMoreBtn.textContent === "Read more") {
-      readMoreBtn.textContent = "Show less";
-    } else {
-      readMoreBtn.textContent = "Read more";
-    }
-  });
-  elementsAppender(descDiv, [pDiv]);
-  elementsAppender(pDiv, [descP, readMoreBtn]);
-  elementsAppender(parent, [descDiv]);
-};
-
-const createSearch = (parent) => {
-  const searchContainer = createElement("div", [
-    "flex",
-    "justify-center",
-    "mb-4",
-    "mt-4",
-  ]);
-  const searchDiv = createElement("div", [
-    "w-full",
-    "max-w-2xl",
-    "flex",
-    "gap-2",
-  ]);
-  const searchInput = createElement("input", [
-    "flex-grow",
-    "w-full",
-    "h-16",
-    "pl-16",
-    "pr-16",
-    "text-lg",
-    "border-2",
-    "border-gray-200",
-    "rounded-2xl",
-    "bg-white",
-    "shadow-lg",
-    "focus:outline-none",
-    "focus:border-primary",
-    "focus:ring-4",
-    "focus:ring-primary/20",
-    "transition-all",
-    "duration-300",
-    "input"
-  ]);
-  searchInput.type = "text";
-  searchInput.placeholder = "Enter character name...";
-  const goButton = createElement("button", [
-    "h-16",
-    "px-6",
-    "bg-gray-400",
-    "text-white",
-    "rounded-2xl",
-    "shadow-lg",
-    "hover:bg-primary-dark",
-    "transition-all",
-    "duration-300",
-    "text-lg",
-    "font-semibold",
-    "go"
-  ]);
-  goButton.textContent = "Go";
-  goButton.addEventListener("click", goHundler);
-  goButton.disabled = true;
-  searchInput.addEventListener("input", () => {
-    const isEmpty = searchInput.value.trim() === "";
-    goButton.disabled = isEmpty;
-    if (isEmpty) {
-      goButton.classList.remove("bg-primary");
-      goButton.classList.add("bg-gray-400");
-    } else {
-      goButton.classList.remove("bg-gray-400");
-      goButton.classList.add("bg-primary");
-    }
-  });
-
-  elementsAppender(searchDiv, [searchInput, goButton]);
-  elementsAppender(searchContainer, [searchDiv]);
-  elementsAppender(parent, [searchContainer]);
 };

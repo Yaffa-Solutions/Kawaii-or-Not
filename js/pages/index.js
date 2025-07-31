@@ -1,10 +1,8 @@
-import { createHeaderSection } from "../components/header.js";
+import { createHeaderSection } from '../components/header.js';
 
-import {renderGameUI} from "../components/render.js"
+import { renderGameUI } from '../components/render.js';
 
-document.addEventListener('DOMContentLoaded',()=>{
-     createHeaderSection()
-    renderGameUI()
-
-
-})
+document.addEventListener('DOMContentLoaded', () => {
+  createHeaderSection();
+  renderGameUI();
+});

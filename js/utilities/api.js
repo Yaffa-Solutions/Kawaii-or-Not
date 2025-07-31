@@ -1,4 +1,4 @@
-import { fetch } from "./fetch.js";
+import { fetch } from './fetch.js';
 
 const getRandom = (array, number) => {
   const result = [];
@@ -17,148 +17,181 @@ let currentIndex = 0;
 let score = 0;
 let continueBtn = null;
 
-export const fetchAnime = () => {
-  const url = "https://api.jikan.moe/v4/characters";
-  fetch(url, "GET", (err, data) => {
+export const fetchAnime2 = (api) => {
+  let data;
+  const url = 'https://api.jikan.moe/v4/characters';
+  fetch(url, 'GET', (err, data) => {
     if (err) {
-      console.error("Error fetching anime data:", err);
+      console.error('Error fetching anime data:', err);
       return;
     }
-
-    animeData = getRandom(data.data, 10);
+    data = getRandom(data.data, 10);
     currentIndex = 0;
-
-    updateCard(animeData[currentIndex]);
-    updateDescription(animeData[currentIndex]);
-
-    continueBtn = document.querySelector(".continue");
-    continueBtn.disabled = true;
-    if (continueBtn) {
-      continueBtn.addEventListener("click", clickContinue);
-    }
   });
+  return data;
 };
 
+const renderData = ({ updateCard, updateDescription }) => {
+  const data = fetchAnime2();
+  updateCard(animeData[currentIndex]);
+  updateDescription(animeData[currentIndex]);
+  continueBtn = document.querySelector('.continue');
+  continueBtn.disabled = true;
+  if (continueBtn) {
+    continueBtn.addEventListener('click', clickContinue);
+  }
+};
+
+// export const fetchAnime = () => {
+//   const url = 'https://api.jikan.moe/v4/characters';
+//   fetch(url, 'GET', (err, data) => {
+//     if (err) {
+//       console.error('Error fetching anime data:', err);
+//       return;
+//     }
+
+//     animeData = getRandom(data.data, 10);
+//     currentIndex = 0;
+
+//     updateCard(animeData[currentIndex]);
+//     updateDescription(animeData[currentIndex]);
+
+//     continueBtn = document.querySelector('.continue');
+//     continueBtn.disabled = true;
+//     if (continueBtn) {
+//       continueBtn.addEventListener('click', clickContinue);
+//     }
+//   });
+// };
+
 const updateCard = (character) => {
-  const img = document.querySelector(".card-image");
-  const name = document.querySelector(".card-name");
+  const img = document.querySelector('.card-image');
+  const name = document.querySelector('.card-name');
 
   if (img && name) {
     img.src = character.images.jpg.image_url;
     img.alt = character.name;
     name.textContent = character.name;
 
-    img.style.display = "none";
-    name.style.display = "none";
+    img.style.display = 'none';
+    name.style.display = 'none';
   }
 };
 
 const updateDescription = (character) => {
-  const desc = document.querySelector(".descAnime");
-  const readMoreBtn = document.querySelector(".readMoreBtn");
+  const desc = document.querySelector('.descAnime');
+  const readMoreBtn = document.querySelector('.readMoreBtn');
 
   if (desc && character) {
-    let cleanDescription = character.about || "No description available.";
-    cleanDescription = cleanDescription.split(character.name).join("");
+    let cleanDescription = character.about || 'No description available.';
+    cleanDescription = cleanDescription.split(character.name).join('');
     desc.textContent = cleanDescription;
 
     if (character.about && character.about.length > 300) {
-      readMoreBtn.style.display = "inline";
+      readMoreBtn.style.display = 'inline';
     } else {
-      readMoreBtn.style.display = "none";
+      readMoreBtn.style.display = 'none';
     }
   }
 };
 
-const clickContinue = () => {
+const clickContinue = ({ continueBtn }) => {
   if (!animeData) return;
   continueBtn.disabled = true;
-  continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+  continueBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
   currentIndex++;
   if (currentIndex >= animeData.length) {
     let finalMessage = `Your final score is: ${score}/10`;
     if (score > 5) {
-      finalMessage += " 🎉 You did great!";
+      finalMessage += ' 🎉 You did great!';
     } else {
-      finalMessage += " 😅 This game might not be your thing!";
+      finalMessage += ' 😅 This game might not be your thing!';
     }
     updateResultMessage(finalMessage);
-    const goBtn = document.querySelector(".go");
-    const input = document.querySelector(".input");
+    const goBtn = document.querySelector('.go');
+    const input = document.querySelector('.input');
 
     if (goBtn) {
       goBtn.disabled = true;
-      goBtn.classList.add("opacity-50", "cursor-not-allowed");
+      goBtn.classList.add('opacity-50', 'cursor-not-allowed');
     }
     if (input) input.disabled = true;
     return;
   }
   updateCard(animeData[currentIndex]);
   updateDescription(animeData[currentIndex]);
-  const input = document.querySelector(".input");
+  const input = document.querySelector('.input');
   if (input) {
     input.disabled = false;
-    input.value = "";
+    input.value = '';
   }
-  const goBtn = document.querySelector(".go");
+  const goBtn = document.querySelector('.go');
   if (goBtn) {
     goBtn.disabled = false;
-    goBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    goBtn.classList.remove('opacity-50', 'cursor-not-allowed');
   }
-  updateResultMessage("Your guess?");
+  updateResultMessage('Your guess?');
 };
+
+const compareValues = (firstValue, secondValue) => firstValue === secondValue;
+
 const checkName = () => {
-  const input = document.querySelector(".input");
+  const input = document.querySelector('.input');
   const guess = input.value.trim().toLowerCase();
   const currentChar = animeData[currentIndex];
   const correctName = currentChar.name.toLowerCase();
+  const isEqual = compareValues(guess, correctName);
 
-  if (guess === correctName) {
+  if (isEqual) {
     score++;
-    updateResultMessage("You got it right! 🎉");
+    updateResultMessage('You got it right! 🎉');
   } else {
-    updateResultMessage("You got it wrong :(");
+    updateResultMessage('You got it wrong :(');
   }
   updateScoreDisplay(score);
-  input.value = "";
+  input.value = '';
 };
+
 export const goHundler = () => {
-  const img = document.querySelector(".card-image");
-  const name = document.querySelector(".card-name");
-  const input = document.querySelector(".input");
-  const goBtn = document.querySelector(".go");
+
+  const img = document.querySelector('.card-image');
+  const name = document.querySelector('.card-name');
+  const input = document.querySelector('.input');
+  const goBtn = document.querySelector('.go');
   if (goBtn.disabled) return;
 
   const currentChar = animeData[currentIndex];
 
   updateDescription(currentChar);
   if (img && name) {
-    img.style.display = "block";
-    name.style.display = "block";
+    img.style.display = 'block';
+    name.style.display = 'block';
   }
   checkName();
   input.disabled = true;
   goBtn.disabled = true;
-  goBtn.classList.add("opacity-50", "cursor-not-allowed");
+  goBtn.classList.add('opacity-50', 'cursor-not-allowed');
   if (currentIndex === animeData.length - 1) {
     if (continueBtn) {
       continueBtn.disabled = true;
-      continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+      continueBtn.classList.add('opacity-50', 'cursor-not-allowed');
     }
   } else {
     if (continueBtn) {
       continueBtn.disabled = false;
-      continueBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      continueBtn.classList.remove('opacity-50', 'cursor-not-allowed');
     }
   }
 };
+
 const updateResultMessage = (text) => {
-  const msg = document.querySelector(".msg");
+  const msg = document.querySelector('.msg');
   msg.textContent = text;
 };
+
 const updateScoreDisplay = (newScore) => {
-  const score = document.querySelector(".score");
+  const score = document.querySelector('.score');
   if (!score) return;
   const isFinal = currentIndex === animeData.length - 1;
   if (isFinal) {
@@ -172,16 +205,17 @@ const updateScoreDisplay = (newScore) => {
     score.textContent = `Your score is: ${newScore}/10`;
   }
 };
+
 export const restartBtn = () => {
   score = 0;
   currentIndex = 0;
-  updateResultMessage("Your Guess?");
+  updateResultMessage('Your Guess?');
   updateScoreDisplay(score);
   fetchAnime();
-  const input = document.querySelector(".input");
-  if (input) input.value = "";
+  const input = document.querySelector('.input');
+  if (input) input.value = '';
   if (continueBtn) {
     continueBtn.disabled = true;
-    continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    continueBtn.classList.add('opacity-50', 'cursor-not-allowed');
   }
 };
