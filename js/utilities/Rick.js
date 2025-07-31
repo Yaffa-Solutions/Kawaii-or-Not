@@ -131,8 +131,27 @@ const updateResultMessage = (text) => {
 const clickContinue = () => {
   if (!rickData) return;
   rickIndex++;
-  if (rickIndex >= rickData.length) rickIndex = 0;
-  updateCard(rickData[rickIndex],false);
+  if (rickIndex >= rickData.length) {
+  
+    const finalMessage =
+      score > 5
+        ? `Your final score is: ${score}/10 🎉 You did great!`
+        : `Your final score is: ${score}/10 😅 This game might not be your thing!`;
+    updateResultMessage(finalMessage);
+
+    const goBtn = document.querySelector(".go");
+    const input = document.querySelector(".input");
+
+    if (goBtn) {
+      goBtn.disabled = true;
+      goBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+    if (input) input.disabled = true;
+
+    return;
+  }
+
+  updateCard(rickData[rickIndex], false);
   updateDescription(rickData[rickIndex]);
 
   const input = document.querySelector(".input");
@@ -146,10 +165,19 @@ const clickContinue = () => {
 
   updateResultMessage("Your guess?");
 };
-const updateScoreDisplay = (score) => {
+const updateScoreDisplay = (newScore) => {
   const scoreEl = document.querySelector(".score");
-  if (scoreEl) {
-    scoreEl.textContent = `Score: ${score}/10`;
+  if (!scoreEl) return;
+
+  const isFinal = rickIndex === rickData.length - 1;
+  if (isFinal) {
+    const finalMessage =
+      newScore > 5
+        ? `Your final score is: ${newScore}/10 🎉 You did great!`
+        : `Your final score is: ${newScore}/10 😅 This game might not be your thing!`;
+    scoreEl.textContent = finalMessage;
+  } else {
+    scoreEl.textContent = `Your score is: ${newScore}/10`;
   }
 };
 
@@ -171,6 +199,22 @@ export const goHandlerRick = () => {
 
   updateCard(currentChar, true);
   input.disabled = true;
+
+   const goBtn = document.querySelector(".go");
+  if (goBtn) {
+    goBtn.disabled = true;
+    goBtn.classList.add("opacity-50", "cursor-not-allowed");
+  }
+
+  const isFinal = rickIndex === rickData.length - 1;
+  if (isFinal) {
+    if (continueBtn) {
+      continueBtn.disabled = true;
+      continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+
+    return;
+  }
 
   if (continueBtn) {
     continueBtn.disabled = false;
